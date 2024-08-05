@@ -1,0 +1,6 @@
+outs:
+- md5: 58a3e3045502b95e424aa2955ba3afc1.dir
+  size: 1196077488
+  nfiles: 1401
+  hash: md5
+  path: llamaindex-docs
