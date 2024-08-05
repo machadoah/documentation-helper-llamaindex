@@ -20,12 +20,13 @@ load_dotenv()
 
 nltk.download("averaged_perceptron_tagger")
 
+
 if __name__ == "__main__":
     print("Going to ingest pinecone documentation...")
 
     # criando leitor de diretório
     dir_reader = SimpleDirectoryReader(
-        input_dir="./llamaindex-docs-tmp",
+        input_dir="./llamaindex-docs",
         file_extractor={".html": UnstructuredReader()},
     )
 
@@ -35,4 +36,21 @@ if __name__ == "__main__":
     # Criando nós
     node_parser = SimpleNodeParser().from_defaults(chunk_size=500, chunk_overlap=20)
     nodes = node_parser.get_nodes_from_documents(documents=documents)
-    pass
+
+    # modelos
+    Settings.llm = OpenAI(model="gpt-4o-mini", temperature=0)
+    Settings.embedding = OpenAIEmbedding(model="text-embedding-3-small", embed_batch_size=100)
+
+    index_name = "documentation-helper-llamaindex"
+    pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+    pinecone_index = pc.Index(name=index_name)
+
+    vector_store = PineconeVectorStore(pinecone_index=pinecone_index)
+    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+
+    index = VectorStoreIndex.from_documents(
+        documents=documents,
+        storage_context=storage_context,
+        show_progress=True,
+    )
+    print("finished ingesting...")
