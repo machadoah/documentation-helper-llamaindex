@@ -2,11 +2,6 @@
 
 Este projeto é um RAG com a documentação do Llamaindex.
 
-## Pré-requisitos
-
-- Python 3.12
-- 
-
 ## Instalação
 
 ### Instale o Poetry
@@ -52,7 +47,12 @@ pyenv install 3.12.4
 
 #### 3. Defina a Versão do Python no Projeto
 
-Depois de instalar a versão do Python, defina-a como a versão do Python a ser usada neste projeto:
+Para começar, clone o repositório do projeto:
+
+```bash
+git clone https://github.com/seu-usuario/documentation-helper-llamaindex.git
+cd documentation-helper-llamaindex
+```
 
 ```bash
 pyenv local 3.12.4
@@ -84,6 +84,17 @@ Após a instalação do Poetry, ative o ambiente virtual:
 
 ```sh
 poetry shell
+```
+
+### Verificar ambiente 
+
+```sh
+poetry env list
+```
+Deve Imprimir:
+
+```
+.venv (Activated)
 ```
 
 ### Instalar as dependências do projeto
