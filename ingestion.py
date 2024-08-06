@@ -43,14 +43,11 @@ if __name__ == "__main__":
         model="text-embedding-3-small", embed_batch_size=100
     )
 
-    # Utiliza o nome do indice do Pinecone criado em https://app.pinecone.io/
-    index_name = "documentation-helper-llamaindex"
-
     # Inicializa o cliente Pinecone com a chave de API
     pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
 
     # Obtém o índice Pinecone pelo nome
-    pinecone_index = pc.Index(name=index_name)
+    pinecone_index = pc.Index(name=os.environ['PINECONE_INDEX_NAME'])
 
     # Cria um armazenamento de vetores usando Pinecone
     vector_store = PineconeVectorStore(pinecone_index=pinecone_index)

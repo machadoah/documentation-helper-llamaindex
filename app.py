@@ -13,8 +13,7 @@ load_dotenv()
 def get_index() -> VectorStoreIndex:
 
     pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
-    index_name = "documentation-helper-llamaindex"
-    pinecone_index = pc.Index(name=index_name)
+    pinecone_index = pc.Index(name=os.environ['PINECONE_INDEX_NAME'])
     vector_store = PineconeVectorStore(pinecone_index=pinecone_index)
 
     return VectorStoreIndex.from_vector_store(vector_store=vector_store)
