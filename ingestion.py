@@ -24,33 +24,45 @@ nltk.download("averaged_perceptron_tagger")
 if __name__ == "__main__":
     print("Going to ingest pinecone documentation...")
 
-    # criando leitor de diretório
+    # Cria um leitor de diretório para ler arquivos HTML
     dir_reader = SimpleDirectoryReader(
         input_dir="./llamaindex-docs",
         file_extractor={".html": UnstructuredReader()},
     )
 
-    # Lista com os documentados gerados apartir dos .html
+    # Lista com os documentos gerados a partir dos arquivos .html
     documents = dir_reader.load_data()
 
-    # Criando nós
+    # Cria nós a partir dos documentos
     node_parser = SimpleNodeParser().from_defaults(chunk_size=500, chunk_overlap=20)
     nodes = node_parser.get_nodes_from_documents(documents=documents)
 
-    # modelos
+    # Configura o modelo LLM e o modelo de embeddings
     Settings.llm = OpenAI(model="gpt-4o-mini", temperature=0)
-    Settings.embedding = OpenAIEmbedding(model="text-embedding-3-small", embed_batch_size=100)
+    Settings.embedding = OpenAIEmbedding(
+        model="text-embedding-3-small", embed_batch_size=100
+    )
 
+    # Utiliza o nome do indice do Pinecone criado em https://app.pinecone.io/
     index_name = "documentation-helper-llamaindex"
+
+    # Inicializa o cliente Pinecone com a chave de API
     pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
+    # Obtém o índice Pinecone pelo nome
     pinecone_index = pc.Index(name=index_name)
 
+    # Cria um armazenamento de vetores usando Pinecone
     vector_store = PineconeVectorStore(pinecone_index=pinecone_index)
+
+    # Cria um contexto de armazenamento a partir do armazenamento de vetores
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
 
+    # Cria um índice de armazenamento de vetores a partir dos documentos
     index = VectorStoreIndex.from_documents(
         documents=documents,
         storage_context=storage_context,
         show_progress=True,
     )
+
     print("finished ingesting...")
