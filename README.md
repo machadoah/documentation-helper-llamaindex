@@ -2,6 +2,10 @@
 
 Este projeto é um RAG com a documentação do Llamaindex.
 
+
+[RAG](https://github.com/user-attachments/assets/e80822c2-981f-4e1f-bfa1-cf17c4a201d9)
+
+
 ## Instalação
 
 ### Instale o Poetry
