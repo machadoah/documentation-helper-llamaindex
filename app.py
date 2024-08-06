@@ -6,7 +6,6 @@ from llama_index.core.chat_engine.types import ChatMode
 import streamlit as st
 import os
 
-
 load_dotenv()
 
 
@@ -59,12 +58,6 @@ if st.session_state["messages"][-1]["role"] != "assistant":
         with st.spinner("Thinking..."):
             response = st.session_state["chat_engine"].chat(message=prompt)
             st.write(response.response)
-
-            nodes = [node for node in response.source_nodes]
-            for column, node, i in zip(st.columns(len(nodes)), nodes, range(len(nodes))):
-                with column:
-                    st.header(f'Source Node {i+1}: {node.score=}')
-                    st.write(node.text)
 
             message = {"role": "assistant", "content": response.response}
             st.session_state["messages"].append(message)
