@@ -1,5 +1,7 @@
-from dotenv import load_dotenv
 import os
+
+import nltk
+from dotenv import load_dotenv
 from llama_index.core import (
     SimpleDirectoryReader,
     Settings,
@@ -8,13 +10,10 @@ from llama_index.core import (
 )
 from llama_index.core.node_parser import SimpleNodeParser
 from llama_index.llms.groq import Groq
-from llama_index.embeddings.openai import OpenAIEmbedding
-from llama_index.vector_stores.pinecone import PineconeVectorStore
-
-# https://llamahub.ai/l/readers/llama-index-readers-file?from=readers
 from llama_index.readers.file import UnstructuredReader
+from llama_index.vector_stores.pinecone import PineconeVectorStore
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 from pinecone import Pinecone
-import nltk
 
 load_dotenv()
 
@@ -39,8 +38,8 @@ if __name__ == "__main__":
 
     # Configura o modelo LLM e o modelo de embeddings
     Settings.llm = Groq(model="llama-3.1-70b-versatile", temperature=0)
-    Settings.embedding = OpenAIEmbedding(
-        model="text-embedding-3-small", embed_batch_size=100
+    Settings.embedding = HuggingFaceEmbedding(
+        model_name="intfloat/multilingual-e5-large", embed_batch_size=100
     )
 
     # Inicializa o cliente Pinecone com a chave de API

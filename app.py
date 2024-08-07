@@ -6,7 +6,7 @@ from llama_index.core.chat_engine.types import ChatMode
 
 from llama_index.core.postprocessor import SentenceEmbeddingOptimizer
 from tools.duplicate_postprocessing import DuplicateRemoverNodePostprocessor
-from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
 import streamlit as st
 import os
@@ -28,7 +28,7 @@ index = get_index()
 
 if "chat_engine" not in st.session_state.keys():
     postprocessor = SentenceEmbeddingOptimizer(
-        embed_model=OpenAIEmbedding(), percentile_cutoff=0.5, threshold_cutoff=0.7
+        embed_model=HuggingFaceEmbedding(), percentile_cutoff=0.5, threshold_cutoff=0.7
     )
 
     st.session_state["chat_engine"] = index.as_chat_engine(
