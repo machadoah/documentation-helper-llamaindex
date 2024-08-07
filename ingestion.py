@@ -7,7 +7,7 @@ from llama_index.core import (
     StorageContext,
 )
 from llama_index.core.node_parser import SimpleNodeParser
-from llama_index.llms.openai import OpenAI
+from llama_index.llms.groq import Groq
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.vector_stores.pinecone import PineconeVectorStore
 
@@ -38,7 +38,7 @@ if __name__ == "__main__":
     nodes = node_parser.get_nodes_from_documents(documents=documents)
 
     # Configura o modelo LLM e o modelo de embeddings
-    Settings.llm = OpenAI(model="gpt-4o-mini", temperature=0)
+    Settings.llm = Groq(model="llama-3.1-70b-versatile", temperature=0)
     Settings.embedding = OpenAIEmbedding(
         model="text-embedding-3-small", embed_batch_size=100
     )
