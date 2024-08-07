@@ -19,7 +19,6 @@ load_dotenv()
 
 nltk.download("averaged_perceptron_tagger")
 
-
 if __name__ == "__main__":
     print("Going to ingest pinecone documentation...")
 
@@ -37,8 +36,10 @@ if __name__ == "__main__":
     nodes = node_parser.get_nodes_from_documents(documents=documents)
 
     # Configura o modelo LLM e o modelo de embeddings
-    Settings.llm = Groq(model="llama-3.1-70b-versatile", temperature=0)
-    Settings.embedding = HuggingFaceEmbedding(
+    llm = Groq(model="llama-3.1-70b-versatile", temperature=0)
+
+    # Configurar diretamente o embedding do HuggingFace sem usar o Settings.embedding padrão
+    embedding_model = HuggingFaceEmbedding(
         model_name="intfloat/multilingual-e5-large", embed_batch_size=100
     )
 
@@ -58,6 +59,7 @@ if __name__ == "__main__":
     index = VectorStoreIndex.from_documents(
         documents=documents,
         storage_context=storage_context,
+        embed_model=embedding_model,  # Usando o modelo de embeddings configurado
         show_progress=True,
     )
 

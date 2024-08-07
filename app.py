@@ -28,7 +28,10 @@ index = get_index()
 
 if "chat_engine" not in st.session_state.keys():
     postprocessor = SentenceEmbeddingOptimizer(
-        embed_model=HuggingFaceEmbedding(), percentile_cutoff=0.5, threshold_cutoff=0.7
+        embed_model= HuggingFaceEmbedding(
+            model_name="intfloat/multilingual-e5-large",
+            embed_batch_size=100
+    ), percentile_cutoff=0.5, threshold_cutoff=0.7
     )
 
     st.session_state["chat_engine"] = index.as_chat_engine(
