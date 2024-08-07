@@ -21,17 +21,24 @@ def get_index() -> VectorStoreIndex:
     pinecone_index = pc.Index(name=os.environ["PINECONE_INDEX_NAME"])
     vector_store = PineconeVectorStore(pinecone_index=pinecone_index)
 
-    return VectorStoreIndex.from_vector_store(vector_store=vector_store)
+    embedding_model = HuggingFaceEmbedding(
+        model_name="intfloat/multilingual-e5-large", embed_batch_size=100
+    )
+
+    return VectorStoreIndex.from_vector_store(
+        vector_store=vector_store, embed_model=embedding_model
+    )
 
 
 index = get_index()
 
 if "chat_engine" not in st.session_state.keys():
     postprocessor = SentenceEmbeddingOptimizer(
-        embed_model= HuggingFaceEmbedding(
-            model_name="intfloat/multilingual-e5-large",
-            embed_batch_size=100
-    ), percentile_cutoff=0.5, threshold_cutoff=0.7
+        embed_model=HuggingFaceEmbedding(
+            model_name="intfloat/multilingual-e5-large", embed_batch_size=100
+        ),
+        percentile_cutoff=0.5,
+        threshold_cutoff=0.7,
     )
 
     st.session_state["chat_engine"] = index.as_chat_engine(
