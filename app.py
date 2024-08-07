@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from llama_index.llms.groq import Groq
 from pinecone import Pinecone
 from llama_index.core import VectorStoreIndex
 from llama_index.vector_stores.pinecone import PineconeVectorStore
@@ -45,6 +46,7 @@ if "chat_engine" not in st.session_state.keys():
         chat_mode=ChatMode.CONTEXT,
         verbose=True,
         node_postprocessors=[postprocessor, DuplicateRemoverNodePostprocessor()],
+        llm = Groq(model="llama-3.1-70b-versatile", temperature=0),
     )
 
 
