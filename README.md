@@ -82,6 +82,12 @@ Abra seu terminal e configure o Poetry para criar ambientes virtuais dentro do p
 poetry config virtualenvs.in-project true
 ```
 
+Executar o python do ambiente virtual:
+
+```sh
+poetry config virtualenvs.prefer-active-python true
+```
+
 ### Ativar o ambiente virtual
 
 Após a instalação do Poetry, ative o ambiente virtual:
